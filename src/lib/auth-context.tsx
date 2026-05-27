@@ -56,6 +56,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 export function useAuth() {
   const ctx = useContext(AuthContext);
-  if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+  if (!ctx) {
+    // SSR / prerender fallback — provider not mounted yet.
+    return {
+      user: null,
+      session: null,
+      loading: true,
+      signIn: async () => ({ error: "not-ready" }),
+      signUp: async () => ({ error: "not-ready" }),
+      signOut: async () => {},
+    } satisfies AuthCtx;
+  }
   return ctx;
 }
