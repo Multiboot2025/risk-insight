@@ -25,7 +25,7 @@ function LoginPage() {
     if (!loading && user) navigate({ to: "/dashboard", replace: true });
   }, [loading, user, navigate]);
 
-  const handle = async (mode: "in" | "up") => async (e: FormEvent) => {
+  const handle = (mode: "in" | "up") => async (e: FormEvent) => {
     e.preventDefault();
     setBusy(true);
     const fn = mode === "in" ? signIn : signUp;
