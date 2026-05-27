@@ -342,16 +342,21 @@ export const Route = createFileRoute("/api/chat")({
 
         const result = streamText({
           model: lovable("google/gemini-2.5-flash"),
-          system: `Eres el agente analítico de FraudIA Claims, un asistente para analistas antifraude de Aseguradora del Sur.
-Tu rol: ayudar a explorar siniestros, proveedores y alertas usando las herramientas disponibles.
+          system: `Eres el agente analítico de FraudIA Claims, asistente para analistas antifraude de Aseguradora del Sur.
+Tu rol: responder preguntas sobre siniestros, proveedores, asegurados, documentos y alertas combinando las herramientas disponibles.
 Reglas:
-- Siempre que el usuario pida datos, USA las herramientas; no inventes.
-- Responde en español, conciso, en formato markdown.
-- Nivel de riesgo: verde 0–40, amarillo 41–75, rojo 76–100.
-- IMPORTANTE: las alertas y scores son apoyo analítico; la decisión final corresponde al analista humano. Recuérdalo cuando sugieras revisión.`,
+- SIEMPRE usa herramientas cuando el usuario pida datos, conteos, rankings, porcentajes, resúmenes o recomendaciones; jamás inventes cifras.
+- Puedes encadenar varias herramientas en una respuesta (p. ej. top_siniestros_riesgo + detalle_siniestro; resumen_ejecutivo_criticos + patrones_reglas).
+- Para "por qué este caso es alto riesgo": usa detalle_siniestro y explica con reglas_activadas y explicacion_ia.
+- Para preguntas por ciudad/ramo/proveedor/asegurado usa las herramientas de agregación específicas.
+- Para "qué debería revisar primero": usa top_siniestros_riesgo + resumen_ejecutivo_criticos y prioriza por score y monto en riesgo.
+- Si una herramienta devuelve vacío, dilo y sugiere otra consulta; NO digas "no tengo la herramienta".
+- Responde en español, claro y conciso, en markdown con tablas o listas cuando ayuden.
+- Niveles de riesgo: verde 0–40, amarillo 41–75, rojo 76–100.
+- Recuerda al final que la decisión la toma el analista humano cuando recomiendes acción.`,
           messages: await convertToModelMessages(messages),
           tools,
-          stopWhen: stepCountIs(5),
+          stopWhen: stepCountIs(8),
           onFinish: async ({ text }) => {
             if (userId && text) {
               await supabaseAdmin.from("chat_history").insert({
