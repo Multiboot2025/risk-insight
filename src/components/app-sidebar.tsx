@@ -1,5 +1,6 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Inbox, MessagesSquare, Users, FileText, Settings, ShieldAlert, BookOpen, FlaskConical, Bell, FileSpreadsheet } from "lucide-react";
+import { LayoutDashboard, Inbox, MessagesSquare, Users, FileText, Settings, BookOpen, FlaskConical, Bell, FileSpreadsheet } from "lucide-react";
+import logoAseguradora from "@/assets/logo-aseguradora.png";
 import {
   Sidebar,
   SidebarContent,
@@ -33,12 +34,12 @@ export function AppSidebar() {
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <div className="flex items-center gap-2 px-2 py-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <ShieldAlert className="h-5 w-5" />
+          <div className="flex h-10 w-10 items-center justify-center rounded-md bg-white p-1 shrink-0">
+            <img src={logoAseguradora} alt="Aseguradora del Sur" className="h-full w-full object-contain" />
           </div>
           <div className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-bold">FraudIA Claims</span>
-            <span className="text-[10px] text-muted-foreground">Aseguradora del Sur</span>
+            <span className="text-sm font-bold text-sidebar-foreground">FraudIA Claims</span>
+            <span className="text-[10px] text-sidebar-foreground/70">Aseguradora del Sur</span>
           </div>
         </div>
       </SidebarHeader>
