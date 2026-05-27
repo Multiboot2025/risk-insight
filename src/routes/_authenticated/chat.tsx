@@ -1,85 +1,130 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { MessagesSquare, Send } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
-import { Card } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport, type UIMessage } from "ai";
+import { ShieldAlert, MessagesSquare } from "lucide-react";
+import { useEffect, useRef } from "react";
+import {
+  Conversation,
+  ConversationContent,
+  ConversationEmptyState,
+  ConversationScrollButton,
+} from "@/components/ai-elements/conversation";
+import { Message, MessageContent, MessageResponse } from "@/components/ai-elements/message";
+import {
+  PromptInput,
+  PromptInputTextarea,
+  PromptInputFooter,
+  PromptInputSubmit,
+  type PromptInputMessage,
+} from "@/components/ai-elements/prompt-input";
+import { Shimmer } from "@/components/ai-elements/shimmer";
 
 export const Route = createFileRoute("/_authenticated/chat")({
   head: () => ({ meta: [{ title: "Chat agente · FraudIA Claims" }] }),
   component: ChatPage,
 });
 
-interface Msg { role: "user" | "assistant"; content: string }
+function ToolPart({ part }: { part: any }) {
+  const name = part.type?.replace("tool-", "") ?? "tool";
+  const state = part.state;
+  const label =
+    state === "input-streaming" || state === "input-available"
+      ? `Consultando ${name}…`
+      : state === "output-error"
+      ? `Error en ${name}`
+      : `${name}`;
+  return (
+    <details className="mt-2 rounded-md border bg-muted/40 px-2 py-1 text-xs">
+      <summary className="cursor-pointer select-none font-mono text-muted-foreground">
+        🔧 {label}
+      </summary>
+      {part.input && (
+        <pre className="mt-1 overflow-x-auto whitespace-pre-wrap text-[10px] text-muted-foreground">
+          input: {JSON.stringify(part.input, null, 2)}
+        </pre>
+      )}
+      {part.output && (
+        <pre className="mt-1 overflow-x-auto whitespace-pre-wrap text-[10px] text-muted-foreground">
+          {JSON.stringify(part.output, null, 2)}
+        </pre>
+      )}
+      {part.errorText && <pre className="mt-1 text-[10px] text-destructive">{part.errorText}</pre>}
+    </details>
+  );
+}
 
 function ChatPage() {
-  const [messages, setMessages] = useState<Msg[]>([
-    { role: "assistant", content: "Hola, soy el agente analítico de FraudIA. Puedo ayudarte a explorar siniestros, proveedores y alertas. ¿Qué quieres revisar?" },
-  ]);
-  const [input, setInput] = useState("");
-  const [loading, setLoading] = useState(false);
-  const endRef = useRef<HTMLDivElement>(null);
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({ api: "/api/chat" }),
+  });
 
-  useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (status === "ready") textareaRef.current?.focus();
+  }, [status]);
+  useEffect(() => { textareaRef.current?.focus(); }, []);
 
-  const send = async () => {
-    const text = input.trim();
-    if (!text || loading) return;
-    setInput("");
-    setMessages((m) => [...m, { role: "user", content: text }]);
-    setLoading(true);
-    // Stub: respuesta determinista hasta integrar Lovable AI Gateway (paso 10/11)
-    await new Promise((r) => setTimeout(r, 500));
-    setMessages((m) => [
-      ...m,
-      {
-        role: "assistant",
-        content:
-          "Agente en modo demostración. La integración con el motor analítico y las 12 funciones (consulta de siniestros, ranking de proveedores, explicación de alertas) se conecta en el paso 10–11 del roadmap.",
-      },
-    ]);
-    setLoading(false);
+  const handleSubmit = (msg: PromptInputMessage) => {
+    const text = msg.text?.trim();
+    if (!text) return;
+    sendMessage({ text });
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] max-w-3xl mx-auto">
-      <div className="flex items-center gap-3 mb-4">
-        <MessagesSquare className="h-6 w-6 text-primary" />
+    <div className="flex flex-col h-[calc(100vh-9rem)] max-w-4xl mx-auto">
+      <div className="flex items-center gap-3 mb-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
+          <ShieldAlert className="h-5 w-5" />
+        </div>
         <div>
-          <h1 className="text-2xl font-bold">Chat agente</h1>
-          <p className="text-sm text-muted-foreground">Conversa con el motor analítico</p>
+          <h1 className="text-xl font-bold leading-tight">Agente analítico</h1>
+          <p className="text-xs text-muted-foreground">Explora siniestros, proveedores y alertas con lenguaje natural</p>
         </div>
       </div>
 
-      <Card className="flex-1 p-4 overflow-y-auto space-y-3 bg-muted/30">
-        {messages.map((m, i) => (
-          <div key={i} className={m.role === "user" ? "flex justify-end" : "flex justify-start"}>
-            <div
-              className={
-                "max-w-[80%] rounded-lg px-3 py-2 text-sm " +
-                (m.role === "user" ? "bg-primary text-primary-foreground" : "bg-card border")
-              }
-            >
-              {m.content}
-            </div>
-          </div>
-        ))}
-        {loading && <div className="text-xs text-muted-foreground">El agente está escribiendo…</div>}
-        <div ref={endRef} />
-      </Card>
+      <Conversation className="flex-1 rounded-lg border bg-card">
+        <ConversationContent>
+          {messages.length === 0 && (
+            <ConversationEmptyState
+              icon={<MessagesSquare className="h-8 w-8" />}
+              title="¿Qué quieres revisar?"
+              description='Ej: "Muéstrame los siniestros rojos de Quito", "ranking de proveedores", "alertas recientes"'
+            />
+          )}
+          {(messages as UIMessage[]).map((m) => (
+            <Message key={m.id} from={m.role}>
+              <MessageContent className={m.role === "assistant" ? "bg-transparent p-0" : ""}>
+                {m.parts?.map((part: any, i: number) => {
+                  if (part.type === "text") {
+                    return m.role === "assistant" ? (
+                      <MessageResponse key={i}>{part.text}</MessageResponse>
+                    ) : (
+                      <span key={i}>{part.text}</span>
+                    );
+                  }
+                  if (part.type?.startsWith("tool-")) return <ToolPart key={i} part={part} />;
+                  return null;
+                })}
+              </MessageContent>
+            </Message>
+          ))}
+          {status === "submitted" && (
+            <Message from="assistant">
+              <MessageContent className="bg-transparent p-0">
+                <Shimmer>Pensando…</Shimmer>
+              </MessageContent>
+            </Message>
+          )}
+        </ConversationContent>
+        <ConversationScrollButton />
+      </Conversation>
 
-      <div className="mt-3 flex gap-2">
-        <Input
-          placeholder="Pregunta al agente…"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && send()}
-          disabled={loading}
-        />
-        <Button onClick={send} disabled={loading || !input.trim()}>
-          <Send className="h-4 w-4" />
-        </Button>
-      </div>
+      <PromptInput onSubmit={handleSubmit} className="mt-3">
+        <PromptInputTextarea ref={textareaRef} placeholder="Pregunta al agente…" />
+        <PromptInputFooter className="justify-end">
+          <PromptInputSubmit status={status} disabled={status !== "ready" && status !== "error"} />
+        </PromptInputFooter>
+      </PromptInput>
     </div>
   );
 }
