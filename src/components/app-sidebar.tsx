@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { LayoutDashboard, Inbox, MessagesSquare, Users, FileText, Settings, ShieldAlert, BookOpen, FlaskConical, Bell } from "lucide-react";
+import { LayoutDashboard, Inbox, MessagesSquare, Users, FileText, Settings, ShieldAlert, BookOpen, FlaskConical, Bell, FileSpreadsheet } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -17,6 +17,7 @@ const items = [
   { title: "Bandeja de casos", url: "/casos", icon: Inbox },
   { title: "Centro de Alertas", url: "/alertas", icon: Bell },
   { title: "Simulador en vivo", url: "/demo", icon: FlaskConical },
+  { title: "Análisis por lote", url: "/lote", icon: FileSpreadsheet },
   { title: "Chat agente", url: "/chat", icon: MessagesSquare },
   { title: "Proveedores", url: "/proveedores", icon: Users },
   { title: "Reportes", url: "/reportes", icon: FileText },
