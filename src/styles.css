@@ -59,6 +59,12 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  --color-risk-verde: var(--risk-verde);
+  --color-risk-verde-foreground: var(--risk-verde-foreground);
+  --color-risk-amarillo: var(--risk-amarillo);
+  --color-risk-amarillo-foreground: var(--risk-amarillo-foreground);
+  --color-risk-rojo: var(--risk-rojo);
+  --color-risk-rojo-foreground: var(--risk-rojo-foreground);
 }
 
 :root {
