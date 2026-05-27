@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, type FormEvent, useEffect } from "react";
-import { ShieldAlert, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import logoAseguradora from "@/assets/logo-aseguradora.png";
 import { useAuth } from "@/lib/auth-context";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -43,11 +44,11 @@ function LoginPage() {
     <div className="min-h-screen w-full flex items-center justify-center bg-gradient-to-br from-background via-background to-secondary px-4">
       <div className="w-full max-w-md">
         <div className="mb-6 flex items-center gap-3 justify-center">
-          <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-primary text-primary-foreground">
-            <ShieldAlert className="h-6 w-6" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-lg bg-white p-1.5 shadow-sm border">
+            <img src={logoAseguradora} alt="Aseguradora del Sur" className="h-full w-full object-contain" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">FraudIA Claims</h1>
+            <h1 className="text-xl font-bold tracking-tight text-primary">FraudIA Claims</h1>
             <p className="text-xs text-muted-foreground">Detección asistida de fraude · Aseguradora del Sur</p>
           </div>
         </div>
