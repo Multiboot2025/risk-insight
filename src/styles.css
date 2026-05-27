@@ -101,6 +101,12 @@
   --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
   --sidebar-border: oklch(0.929 0.013 255.508);
   --sidebar-ring: oklch(0.704 0.04 256.788);
+  --risk-verde: oklch(0.72 0.17 152);
+  --risk-verde-foreground: oklch(0.98 0 0);
+  --risk-amarillo: oklch(0.82 0.16 85);
+  --risk-amarillo-foreground: oklch(0.2 0.02 85);
+  --risk-rojo: oklch(0.62 0.22 27);
+  --risk-rojo-foreground: oklch(0.98 0 0);
 }
 
 .dark {
