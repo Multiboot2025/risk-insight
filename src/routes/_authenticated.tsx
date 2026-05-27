@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth-context";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
+import { ChatFab } from "@/components/chat-fab";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthLayout,
@@ -57,6 +58,7 @@ function AuthLayout() {
           <main className="flex-1 overflow-auto p-4 md:p-6">
             <Outlet />
           </main>
+          <ChatFab />
         </div>
       </div>
     </SidebarProvider>
