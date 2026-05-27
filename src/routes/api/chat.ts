@@ -107,7 +107,7 @@ Reglas:
 - Responde en español, conciso, en formato markdown.
 - Nivel de riesgo: verde 0–40, amarillo 41–75, rojo 76–100.
 - IMPORTANTE: las alertas y scores son apoyo analítico; la decisión final corresponde al analista humano. Recuérdalo cuando sugieras revisión.`,
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
           tools,
           stopWhen: stepCountIs(5),
         });
