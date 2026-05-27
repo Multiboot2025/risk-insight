@@ -93,7 +93,7 @@ function ChatPage() {
           )}
           {(messages as UIMessage[]).map((m) => (
             <Message key={m.id} from={m.role}>
-              <MessageContent variant={m.role === "user" ? "contained" : "flat"}>
+              <MessageContent className={m.role === "assistant" ? "bg-transparent p-0" : ""}>
                 {m.parts?.map((part: any, i: number) => {
                   if (part.type === "text") {
                     return m.role === "assistant" ? (
@@ -110,7 +110,7 @@ function ChatPage() {
           ))}
           {status === "submitted" && (
             <Message from="assistant">
-              <MessageContent variant="flat">
+              <MessageContent className="bg-transparent p-0">
                 <Shimmer>Pensando…</Shimmer>
               </MessageContent>
             </Message>
