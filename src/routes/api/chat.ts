@@ -98,6 +98,32 @@ export const Route = createFileRoute("/api/chat")({
     handlers: {
       POST: async ({ request }) => {
         const { messages }: { messages: UIMessage[] } = await request.json();
+
+        // Auth: validar bearer token y obtener userId
+        const authHeader = request.headers.get("authorization") ?? "";
+        const token = authHeader.replace(/^Bearer\s+/i, "");
+        let userId: string | null = null;
+        if (token) {
+          const { data } = await supabaseAdmin.auth.getUser(token);
+          userId = data.user?.id ?? null;
+        }
+
+        // Persistir último mensaje del usuario
+        if (userId) {
+          const last = messages[messages.length - 1];
+          const userText = last?.parts
+            ?.filter((p: any) => p.type === "text")
+            .map((p: any) => p.text)
+            .join("") ?? "";
+          if (last?.role === "user" && userText) {
+            await supabaseAdmin.from("chat_history").insert({
+              user_id: userId,
+              role: "user",
+              content: userText,
+            });
+          }
+        }
+
         const result = streamText({
           model: lovable("google/gemini-2.5-flash"),
           system: `Eres el agente analítico de FraudIA Claims, un asistente para analistas antifraude de Aseguradora del Sur.
@@ -110,6 +136,15 @@ Reglas:
           messages: await convertToModelMessages(messages),
           tools,
           stopWhen: stepCountIs(5),
+          onFinish: async ({ text }) => {
+            if (userId && text) {
+              await supabaseAdmin.from("chat_history").insert({
+                user_id: userId,
+                role: "assistant",
+                content: text,
+              });
+            }
+          },
         });
         return result.toUIMessageStreamResponse();
       },
