@@ -14,7 +14,391 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alertas_log: {
+        Row: {
+          destinatario: string | null
+          email_enviado: boolean | null
+          fecha: string | null
+          id: string
+          id_siniestro: string | null
+          nivel_riesgo: string | null
+          payload: Json | null
+          score: number | null
+        }
+        Insert: {
+          destinatario?: string | null
+          email_enviado?: boolean | null
+          fecha?: string | null
+          id?: string
+          id_siniestro?: string | null
+          nivel_riesgo?: string | null
+          payload?: Json | null
+          score?: number | null
+        }
+        Update: {
+          destinatario?: string | null
+          email_enviado?: boolean | null
+          fecha?: string | null
+          id?: string
+          id_siniestro?: string | null
+          nivel_riesgo?: string | null
+          payload?: Json | null
+          score?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alertas_log_id_siniestro_fkey"
+            columns: ["id_siniestro"]
+            isOneToOne: false
+            referencedRelation: "siniestros"
+            referencedColumns: ["id_siniestro"]
+          },
+        ]
+      }
+      asegurados: {
+        Row: {
+          antiguedad_meses: number | null
+          ciudad: string | null
+          created_at: string | null
+          id_asegurado: string
+          mora_actual: boolean | null
+          nombre_anon: string
+          num_polizas: number | null
+          reclamos_ult_12m: number | null
+          score_cliente: number | null
+          segmento: string | null
+        }
+        Insert: {
+          antiguedad_meses?: number | null
+          ciudad?: string | null
+          created_at?: string | null
+          id_asegurado: string
+          mora_actual?: boolean | null
+          nombre_anon: string
+          num_polizas?: number | null
+          reclamos_ult_12m?: number | null
+          score_cliente?: number | null
+          segmento?: string | null
+        }
+        Update: {
+          antiguedad_meses?: number | null
+          ciudad?: string | null
+          created_at?: string | null
+          id_asegurado?: string
+          mora_actual?: boolean | null
+          nombre_anon?: string
+          num_polizas?: number | null
+          reclamos_ult_12m?: number | null
+          score_cliente?: number | null
+          segmento?: string | null
+        }
+        Relationships: []
+      }
+      chat_history: {
+        Row: {
+          content: string | null
+          contexto: Json | null
+          created_at: string | null
+          id: string
+          role: string | null
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          contexto?: Json | null
+          created_at?: string | null
+          id?: string
+          role?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          contexto?: Json | null
+          created_at?: string | null
+          id?: string
+          role?: string | null
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      config: {
+        Row: {
+          key: string
+          updated_at: string | null
+          value: Json
+        }
+        Insert: {
+          key: string
+          updated_at?: string | null
+          value: Json
+        }
+        Update: {
+          key?: string
+          updated_at?: string | null
+          value?: Json
+        }
+        Relationships: []
+      }
+      documentos: {
+        Row: {
+          created_at: string | null
+          entregado: boolean | null
+          fecha_emision: string | null
+          id_documento: string
+          id_siniestro: string | null
+          inconsistencia_detectada: boolean | null
+          legible: boolean | null
+          observacion: string | null
+          tipo_documento: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          entregado?: boolean | null
+          fecha_emision?: string | null
+          id_documento?: string
+          id_siniestro?: string | null
+          inconsistencia_detectada?: boolean | null
+          legible?: boolean | null
+          observacion?: string | null
+          tipo_documento?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          entregado?: boolean | null
+          fecha_emision?: string | null
+          id_documento?: string
+          id_siniestro?: string | null
+          inconsistencia_detectada?: boolean | null
+          legible?: boolean | null
+          observacion?: string | null
+          tipo_documento?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documentos_id_siniestro_fkey"
+            columns: ["id_siniestro"]
+            isOneToOne: false
+            referencedRelation: "siniestros"
+            referencedColumns: ["id_siniestro"]
+          },
+        ]
+      }
+      polizas: {
+        Row: {
+          canal_venta: string | null
+          ciudad: string | null
+          created_at: string | null
+          deducible: number | null
+          estado_poliza: string | null
+          fecha_fin: string | null
+          fecha_inicio: string | null
+          id_asegurado: string | null
+          id_poliza: string
+          prima: number | null
+          ramo: string | null
+          suma_asegurada: number | null
+        }
+        Insert: {
+          canal_venta?: string | null
+          ciudad?: string | null
+          created_at?: string | null
+          deducible?: number | null
+          estado_poliza?: string | null
+          fecha_fin?: string | null
+          fecha_inicio?: string | null
+          id_asegurado?: string | null
+          id_poliza: string
+          prima?: number | null
+          ramo?: string | null
+          suma_asegurada?: number | null
+        }
+        Update: {
+          canal_venta?: string | null
+          ciudad?: string | null
+          created_at?: string | null
+          deducible?: number | null
+          estado_poliza?: string | null
+          fecha_fin?: string | null
+          fecha_inicio?: string | null
+          id_asegurado?: string | null
+          id_poliza?: string
+          prima?: number | null
+          ramo?: string | null
+          suma_asegurada?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "polizas_id_asegurado_fkey"
+            columns: ["id_asegurado"]
+            isOneToOne: false
+            referencedRelation: "asegurados"
+            referencedColumns: ["id_asegurado"]
+          },
+        ]
+      }
+      proveedores: {
+        Row: {
+          antiguedad_meses: number | null
+          casos_observados_anio: number | null
+          ciudad: string | null
+          created_at: string | null
+          en_lista_restrictiva: boolean | null
+          id_proveedor: string
+          nombre: string
+          tipo: string | null
+        }
+        Insert: {
+          antiguedad_meses?: number | null
+          casos_observados_anio?: number | null
+          ciudad?: string | null
+          created_at?: string | null
+          en_lista_restrictiva?: boolean | null
+          id_proveedor: string
+          nombre: string
+          tipo?: string | null
+        }
+        Update: {
+          antiguedad_meses?: number | null
+          casos_observados_anio?: number | null
+          ciudad?: string | null
+          created_at?: string | null
+          en_lista_restrictiva?: boolean | null
+          id_proveedor?: string
+          nombre?: string
+          tipo?: string | null
+        }
+        Relationships: []
+      }
+      siniestros: {
+        Row: {
+          beneficiario: string | null
+          ciudad: string | null
+          cobertura: string | null
+          created_at: string | null
+          descripcion: string | null
+          dinamica_accidente: string | null
+          documentos_completos: boolean | null
+          estado: string | null
+          explicacion_ia: string | null
+          fecha_ocurrencia: string | null
+          fecha_reporte: string | null
+          hubo_tercero: boolean | null
+          id_asegurado: string | null
+          id_poliza: string | null
+          id_proveedor: string | null
+          id_siniestro: string
+          monto_estimado: number | null
+          monto_pagado: number | null
+          monto_reclamado: number | null
+          nivel_riesgo: string | null
+          ramo: string | null
+          reglas_activadas: Json | null
+          score_riesgo: number | null
+          similitud_pct: number | null
+          siniestro_similar_id: string | null
+          sucursal: string | null
+          updated_at: string | null
+          vehiculo_anio: number | null
+          vehiculo_chasis: string | null
+          vehiculo_marca: string | null
+          vehiculo_modelo: string | null
+          vehiculo_motor: string | null
+          vehiculo_placa: string | null
+        }
+        Insert: {
+          beneficiario?: string | null
+          ciudad?: string | null
+          cobertura?: string | null
+          created_at?: string | null
+          descripcion?: string | null
+          dinamica_accidente?: string | null
+          documentos_completos?: boolean | null
+          estado?: string | null
+          explicacion_ia?: string | null
+          fecha_ocurrencia?: string | null
+          fecha_reporte?: string | null
+          hubo_tercero?: boolean | null
+          id_asegurado?: string | null
+          id_poliza?: string | null
+          id_proveedor?: string | null
+          id_siniestro?: string
+          monto_estimado?: number | null
+          monto_pagado?: number | null
+          monto_reclamado?: number | null
+          nivel_riesgo?: string | null
+          ramo?: string | null
+          reglas_activadas?: Json | null
+          score_riesgo?: number | null
+          similitud_pct?: number | null
+          siniestro_similar_id?: string | null
+          sucursal?: string | null
+          updated_at?: string | null
+          vehiculo_anio?: number | null
+          vehiculo_chasis?: string | null
+          vehiculo_marca?: string | null
+          vehiculo_modelo?: string | null
+          vehiculo_motor?: string | null
+          vehiculo_placa?: string | null
+        }
+        Update: {
+          beneficiario?: string | null
+          ciudad?: string | null
+          cobertura?: string | null
+          created_at?: string | null
+          descripcion?: string | null
+          dinamica_accidente?: string | null
+          documentos_completos?: boolean | null
+          estado?: string | null
+          explicacion_ia?: string | null
+          fecha_ocurrencia?: string | null
+          fecha_reporte?: string | null
+          hubo_tercero?: boolean | null
+          id_asegurado?: string | null
+          id_poliza?: string | null
+          id_proveedor?: string | null
+          id_siniestro?: string
+          monto_estimado?: number | null
+          monto_pagado?: number | null
+          monto_reclamado?: number | null
+          nivel_riesgo?: string | null
+          ramo?: string | null
+          reglas_activadas?: Json | null
+          score_riesgo?: number | null
+          similitud_pct?: number | null
+          siniestro_similar_id?: string | null
+          sucursal?: string | null
+          updated_at?: string | null
+          vehiculo_anio?: number | null
+          vehiculo_chasis?: string | null
+          vehiculo_marca?: string | null
+          vehiculo_modelo?: string | null
+          vehiculo_motor?: string | null
+          vehiculo_placa?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "siniestros_id_asegurado_fkey"
+            columns: ["id_asegurado"]
+            isOneToOne: false
+            referencedRelation: "asegurados"
+            referencedColumns: ["id_asegurado"]
+          },
+          {
+            foreignKeyName: "siniestros_id_poliza_fkey"
+            columns: ["id_poliza"]
+            isOneToOne: false
+            referencedRelation: "polizas"
+            referencedColumns: ["id_poliza"]
+          },
+          {
+            foreignKeyName: "siniestros_id_proveedor_fkey"
+            columns: ["id_proveedor"]
+            isOneToOne: false
+            referencedRelation: "proveedores"
+            referencedColumns: ["id_proveedor"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
