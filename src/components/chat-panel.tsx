@@ -78,7 +78,7 @@ export function ChatPanel({ compact = false }: { compact?: boolean }) {
     () =>
       new DefaultChatTransport({
         api: "/api/chat",
-        headers: async () => {
+        headers: async (): Promise<Record<string, string>> => {
           const { data: { session } } = await supabase.auth.getSession();
           return session ? { Authorization: `Bearer ${session.access_token}` } : {};
         },
