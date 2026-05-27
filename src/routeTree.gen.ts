@@ -15,6 +15,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedReportesRouteImport } from './routes/_authenticated/reportes'
 import { Route as AuthenticatedProveedoresRouteImport } from './routes/_authenticated/proveedores'
+import { Route as AuthenticatedLoteRouteImport } from './routes/_authenticated/lote'
 import { Route as AuthenticatedDocsRouteImport } from './routes/_authenticated/docs'
 import { Route as AuthenticatedDemoRouteImport } from './routes/_authenticated/demo'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
@@ -54,6 +55,11 @@ const AuthenticatedProveedoresRoute =
     path: '/proveedores',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedLoteRoute = AuthenticatedLoteRouteImport.update({
+  id: '/lote',
+  path: '/lote',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDocsRoute = AuthenticatedDocsRouteImport.update({
   id: '/docs',
   path: '/docs',
@@ -104,6 +110,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/demo': typeof AuthenticatedDemoRoute
   '/docs': typeof AuthenticatedDocsRoute
+  '/lote': typeof AuthenticatedLoteRoute
   '/proveedores': typeof AuthenticatedProveedoresRoute
   '/reportes': typeof AuthenticatedReportesRoute
   '/api/chat': typeof ApiChatRoute
@@ -119,6 +126,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/demo': typeof AuthenticatedDemoRoute
   '/docs': typeof AuthenticatedDocsRoute
+  '/lote': typeof AuthenticatedLoteRoute
   '/proveedores': typeof AuthenticatedProveedoresRoute
   '/reportes': typeof AuthenticatedReportesRoute
   '/api/chat': typeof ApiChatRoute
@@ -136,6 +144,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/demo': typeof AuthenticatedDemoRoute
   '/_authenticated/docs': typeof AuthenticatedDocsRoute
+  '/_authenticated/lote': typeof AuthenticatedLoteRoute
   '/_authenticated/proveedores': typeof AuthenticatedProveedoresRoute
   '/_authenticated/reportes': typeof AuthenticatedReportesRoute
   '/api/chat': typeof ApiChatRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/demo'
     | '/docs'
+    | '/lote'
     | '/proveedores'
     | '/reportes'
     | '/api/chat'
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/demo'
     | '/docs'
+    | '/lote'
     | '/proveedores'
     | '/reportes'
     | '/api/chat'
@@ -184,6 +195,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/demo'
     | '/_authenticated/docs'
+    | '/_authenticated/lote'
     | '/_authenticated/proveedores'
     | '/_authenticated/reportes'
     | '/api/chat'
@@ -240,6 +252,13 @@ declare module '@tanstack/react-router' {
       path: '/proveedores'
       fullPath: '/proveedores'
       preLoaderRoute: typeof AuthenticatedProveedoresRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/lote': {
+      id: '/_authenticated/lote'
+      path: '/lote'
+      fullPath: '/lote'
+      preLoaderRoute: typeof AuthenticatedLoteRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/docs': {
@@ -308,6 +327,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDemoRoute: typeof AuthenticatedDemoRoute
   AuthenticatedDocsRoute: typeof AuthenticatedDocsRoute
+  AuthenticatedLoteRoute: typeof AuthenticatedLoteRoute
   AuthenticatedProveedoresRoute: typeof AuthenticatedProveedoresRoute
   AuthenticatedReportesRoute: typeof AuthenticatedReportesRoute
   AuthenticatedCasosIdRoute: typeof AuthenticatedCasosIdRoute
@@ -321,6 +341,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDemoRoute: AuthenticatedDemoRoute,
   AuthenticatedDocsRoute: AuthenticatedDocsRoute,
+  AuthenticatedLoteRoute: AuthenticatedLoteRoute,
   AuthenticatedProveedoresRoute: AuthenticatedProveedoresRoute,
   AuthenticatedReportesRoute: AuthenticatedReportesRoute,
   AuthenticatedCasosIdRoute: AuthenticatedCasosIdRoute,
