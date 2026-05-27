@@ -12,7 +12,11 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedReportesRouteImport } from './routes/_authenticated/reportes'
+import { Route as AuthenticatedProveedoresRouteImport } from './routes/_authenticated/proveedores'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedConfigRouteImport } from './routes/_authenticated/config'
+import { Route as AuthenticatedChatRouteImport } from './routes/_authenticated/chat'
 import { Route as AuthenticatedCasosIndexRouteImport } from './routes/_authenticated/casos.index'
 import { Route as AuthenticatedCasosIdRouteImport } from './routes/_authenticated/casos.$id'
 
@@ -30,9 +34,30 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedReportesRoute = AuthenticatedReportesRouteImport.update({
+  id: '/reportes',
+  path: '/reportes',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProveedoresRoute =
+  AuthenticatedProveedoresRouteImport.update({
+    id: '/proveedores',
+    path: '/proveedores',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedConfigRoute = AuthenticatedConfigRouteImport.update({
+  id: '/config',
+  path: '/config',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedChatRoute = AuthenticatedChatRouteImport.update({
+  id: '/chat',
+  path: '/chat',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedCasosIndexRoute = AuthenticatedCasosIndexRouteImport.update({
@@ -49,14 +74,22 @@ const AuthenticatedCasosIdRoute = AuthenticatedCasosIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/chat': typeof AuthenticatedChatRoute
+  '/config': typeof AuthenticatedConfigRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/proveedores': typeof AuthenticatedProveedoresRoute
+  '/reportes': typeof AuthenticatedReportesRoute
   '/casos/$id': typeof AuthenticatedCasosIdRoute
   '/casos/': typeof AuthenticatedCasosIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/login': typeof LoginRoute
+  '/chat': typeof AuthenticatedChatRoute
+  '/config': typeof AuthenticatedConfigRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/proveedores': typeof AuthenticatedProveedoresRoute
+  '/reportes': typeof AuthenticatedReportesRoute
   '/casos/$id': typeof AuthenticatedCasosIdRoute
   '/casos': typeof AuthenticatedCasosIndexRoute
 }
@@ -65,21 +98,47 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
+  '/_authenticated/chat': typeof AuthenticatedChatRoute
+  '/_authenticated/config': typeof AuthenticatedConfigRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/proveedores': typeof AuthenticatedProveedoresRoute
+  '/_authenticated/reportes': typeof AuthenticatedReportesRoute
   '/_authenticated/casos/$id': typeof AuthenticatedCasosIdRoute
   '/_authenticated/casos/': typeof AuthenticatedCasosIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/dashboard' | '/casos/$id' | '/casos/'
+  fullPaths:
+    | '/'
+    | '/login'
+    | '/chat'
+    | '/config'
+    | '/dashboard'
+    | '/proveedores'
+    | '/reportes'
+    | '/casos/$id'
+    | '/casos/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/login' | '/dashboard' | '/casos/$id' | '/casos'
+  to:
+    | '/'
+    | '/login'
+    | '/chat'
+    | '/config'
+    | '/dashboard'
+    | '/proveedores'
+    | '/reportes'
+    | '/casos/$id'
+    | '/casos'
   id:
     | '__root__'
     | '/'
     | '/_authenticated'
     | '/login'
+    | '/_authenticated/chat'
+    | '/_authenticated/config'
     | '/_authenticated/dashboard'
+    | '/_authenticated/proveedores'
+    | '/_authenticated/reportes'
     | '/_authenticated/casos/$id'
     | '/_authenticated/casos/'
   fileRoutesById: FileRoutesById
@@ -113,11 +172,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/reportes': {
+      id: '/_authenticated/reportes'
+      path: '/reportes'
+      fullPath: '/reportes'
+      preLoaderRoute: typeof AuthenticatedReportesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/proveedores': {
+      id: '/_authenticated/proveedores'
+      path: '/proveedores'
+      fullPath: '/proveedores'
+      preLoaderRoute: typeof AuthenticatedProveedoresRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
       fullPath: '/dashboard'
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/config': {
+      id: '/_authenticated/config'
+      path: '/config'
+      fullPath: '/config'
+      preLoaderRoute: typeof AuthenticatedConfigRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/chat': {
+      id: '/_authenticated/chat'
+      path: '/chat'
+      fullPath: '/chat'
+      preLoaderRoute: typeof AuthenticatedChatRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/casos/': {
@@ -138,13 +225,21 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedChatRoute: typeof AuthenticatedChatRoute
+  AuthenticatedConfigRoute: typeof AuthenticatedConfigRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedProveedoresRoute: typeof AuthenticatedProveedoresRoute
+  AuthenticatedReportesRoute: typeof AuthenticatedReportesRoute
   AuthenticatedCasosIdRoute: typeof AuthenticatedCasosIdRoute
   AuthenticatedCasosIndexRoute: typeof AuthenticatedCasosIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedChatRoute: AuthenticatedChatRoute,
+  AuthenticatedConfigRoute: AuthenticatedConfigRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedProveedoresRoute: AuthenticatedProveedoresRoute,
+  AuthenticatedReportesRoute: AuthenticatedReportesRoute,
   AuthenticatedCasosIdRoute: AuthenticatedCasosIdRoute,
   AuthenticatedCasosIndexRoute: AuthenticatedCasosIndexRoute,
 }
