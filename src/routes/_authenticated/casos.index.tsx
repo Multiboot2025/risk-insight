@@ -106,16 +106,18 @@ function CasosPage() {
                   <TableRow><TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">Sin resultados.</TableCell></TableRow>
                 )}
                 {rows.map((s) => (
-                  <TableRow key={s.id_siniestro} className="cursor-pointer hover:bg-muted/40" asChild>
-                    <Link to="/casos/$id" params={{ id: s.id_siniestro }} className="contents">
-                      <TableCell className="text-xs whitespace-nowrap">{s.fecha_reporte}</TableCell>
-                      <TableCell className="text-sm">{s.ramo}</TableCell>
-                      <TableCell className="text-sm">{s.ciudad}</TableCell>
-                      <TableCell className="text-xs font-mono">{s.id_asegurado}</TableCell>
-                      <TableCell className="text-sm text-right font-mono">{formatCOP(Number(s.monto_reclamado ?? 0))}</TableCell>
-                      <TableCell className="text-xs capitalize">{s.estado}</TableCell>
-                      <TableCell><RiskBadge nivel={s.nivel_riesgo} score={s.score_riesgo ?? undefined} /></TableCell>
-                    </Link>
+                  <TableRow
+                    key={s.id_siniestro}
+                    className="cursor-pointer hover:bg-muted/40"
+                    onClick={() => { window.location.href = `/casos/${s.id_siniestro}`; }}
+                  >
+                    <TableCell className="text-xs whitespace-nowrap">{s.fecha_reporte}</TableCell>
+                    <TableCell className="text-sm">{s.ramo}</TableCell>
+                    <TableCell className="text-sm">{s.ciudad}</TableCell>
+                    <TableCell className="text-xs font-mono">{s.id_asegurado}</TableCell>
+                    <TableCell className="text-sm text-right font-mono">{formatCOP(Number(s.monto_reclamado ?? 0))}</TableCell>
+                    <TableCell className="text-xs capitalize">{s.estado}</TableCell>
+                    <TableCell><RiskBadge nivel={s.nivel_riesgo} score={s.score_riesgo ?? undefined} /></TableCell>
                   </TableRow>
                 ))}
               </TableBody>
