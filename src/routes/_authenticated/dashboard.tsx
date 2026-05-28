@@ -47,9 +47,10 @@ function Dashboard() {
 
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <KpiCard icon={<ListChecks className="h-4 w-4" />} label="Siniestros totales" value={isLoading ? "…" : String(total)} hint="Últimos 30 días" />
-        <KpiCard icon={<Gauge className="h-4 w-4" />} label="Casos en alerta" value={isLoading ? "…" : String((por.amarillo ?? 0) + (por.rojo ?? 0))} hint={`${por.rojo ?? 0} rojos · ${por.amarillo ?? 0} amarillos`} />
-        <KpiCard icon={<AlertCircle className="h-4 w-4" />} label="Monto en riesgo (rojo)" value={isLoading ? "…" : formatCOP(totalRojo)} hint="Suma reclamada" />
+        <KpiCard icon={<Gauge className="h-4 w-4" />} label="Casos en alerta" value={isLoading ? "…" : String((por.amarillo ?? 0) + (por.rojo ?? 0))} hint={`${por.rojo ?? 0} alto · ${por.amarillo ?? 0} medio`} />
+        <KpiCard icon={<AlertCircle className="h-4 w-4" />} label="Monto en riesgo (alto)" value={isLoading ? "…" : formatCOP(totalRojo)} hint="Suma reclamada" />
         <KpiCard icon={<FileWarning className="h-4 w-4" />} label="Monto reclamado total" value={isLoading ? "…" : formatCOP(totalReclamado)} hint="Todos los casos" />
+
       </div>
 
       <div className="grid gap-4 lg:grid-cols-3">
@@ -83,7 +84,8 @@ function Dashboard() {
 
         <Card className="lg:col-span-2">
           <CardHeader>
-            <CardTitle className="text-base">Top 5 casos críticos (rojo)</CardTitle>
+            <CardTitle className="text-base">Top 5 casos críticos (alto/crítico)</CardTitle>
+
           </CardHeader>
           <CardContent className="space-y-2">
             {isLoading && <p className="text-sm text-muted-foreground">Cargando…</p>}
