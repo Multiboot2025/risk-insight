@@ -15,7 +15,10 @@ export type CasoInput = {
   placa_reincidente: boolean; // ¿la placa aparece en otro siniestro reciente?
   beneficiario_distinto_titular: boolean;
   hora_madrugada: boolean; // ocurrencia 00:00–05:00
+  tipo_impacto?: "ninguno" | "frontal" | "posterior" | "volcadura" | "multiple";
+  relato_ilogico?: boolean; // relato del asegurado inconsistente con el tipo de impacto
 };
+
 
 export type ReglaResultado = {
   id: string;
