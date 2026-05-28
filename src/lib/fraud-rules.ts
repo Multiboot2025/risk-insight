@@ -33,9 +33,10 @@ type Regla = {
   id: string;
   nombre: string;
   descripcion: string;
-  puntos: number;
-  evaluar: (c: CasoInput) => { activada: boolean; detalle?: string };
+  puntos: number; // puntos máximos teóricos (para mostrar en UI)
+  evaluar: (c: CasoInput) => { activada: boolean; detalle?: string; puntos?: number };
 };
+
 
 export const REGLAS: Regla[] = [
   {
@@ -116,9 +117,6 @@ export const REGLAS: Regla[] = [
     id: "R09",
     nombre: "Beneficiario distinto al titular",
     descripcion: "El pago se solicita a un tercero",
-    puntos: 8,
-    evaluar: (c) => ({ activada: c.beneficiario_distinto_titular }),
-  },
   {
     id: "R10",
     nombre: "Ocurrencia en horario atípico",
@@ -126,21 +124,57 @@ export const REGLAS: Regla[] = [
     puntos: 7,
     evaluar: (c) => ({ activada: c.hora_madrugada }),
   },
+  {
+    id: "R11",
+    nombre: "Dinámica sospechosa",
+    descripcion: "Tipo de impacto que requiere revisión minuciosa (frontal/posterior/volcadura/múltiple), relato ilógico vs impacto, o accidente múltiple de madrugada",
+    puntos: 15, // máximo teórico: 6 (impacto) + 6 (relato ilógico) + 3 (múltiple madrugada)
+    evaluar: (c) => {
+      let p = 0;
+      const motivos: string[] = [];
+      const tipo = c.tipo_impacto ?? "ninguno";
+      if (tipo === "volcadura" || tipo === "multiple") {
+        p += 6;
+        motivos.push(`impacto ${tipo} (+6)`);
+      } else if (tipo === "frontal" || tipo === "posterior") {
+        p += 4;
+        motivos.push(`impacto ${tipo} (+4)`);
+      }
+      if (c.relato_ilogico) {
+        p += 6;
+        motivos.push("relato ilógico vs impacto (+6)");
+      }
+      if (tipo === "multiple" && c.hora_madrugada) {
+        p += 3;
+        motivos.push("múltiple de madrugada (+3)");
+      }
+      return {
+        activada: p > 0,
+        puntos: p,
+        detalle: motivos.join(" · "),
+      };
+    },
+  },
+];
+
+    evaluar: (c) => ({ activada: c.hora_madrugada }),
+  },
 ];
 
 export function evaluarCaso(c: CasoInput): ReglaResultado[] {
   return REGLAS.map((r) => {
-    const { activada, detalle } = r.evaluar(c);
+    const { activada, detalle, puntos } = r.evaluar(c);
     return {
       id: r.id,
       nombre: r.nombre,
       descripcion: r.descripcion,
-      puntos: r.puntos,
+      puntos: puntos ?? r.puntos,
       activada,
       detalle,
     };
   });
 }
+
 
 export function nivelDeScore(score: number): "verde" | "amarillo" | "rojo" {
   if (score >= 76) return "rojo";
