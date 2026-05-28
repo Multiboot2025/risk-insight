@@ -171,8 +171,24 @@ function DemoPage() {
             <Toggle label="Placa reincidente" checked={caso.placa_reincidente} onChange={(v) => setCaso({ ...caso, placa_reincidente: v })} />
             <Toggle label="Beneficiario distinto al titular" checked={caso.beneficiario_distinto_titular} onChange={(v) => setCaso({ ...caso, beneficiario_distinto_titular: v })} />
             <Toggle label="Ocurrencia en madrugada (00:00–05:00)" checked={caso.hora_madrugada} onChange={(v) => setCaso({ ...caso, hora_madrugada: v })} />
+
+            <Campo label="Tipo de impacto (dinámica)">
+              <select
+                value={caso.tipo_impacto ?? "ninguno"}
+                onChange={(e) => setCaso({ ...caso, tipo_impacto: e.target.value as CasoInput["tipo_impacto"] })}
+                className="w-full h-9 rounded-md border border-input bg-background px-3 text-sm"
+              >
+                <option value="ninguno">— Sin marca —</option>
+                <option value="frontal">Frontal (+4)</option>
+                <option value="posterior">Posterior (+4)</option>
+                <option value="volcadura">Volcadura (+6)</option>
+                <option value="multiple">Múltiple (+6, +3 si madrugada)</option>
+              </select>
+            </Campo>
+            <Toggle label="Relato ilógico vs tipo de impacto (+6)" checked={!!caso.relato_ilogico} onChange={(v) => setCaso({ ...caso, relato_ilogico: v })} />
           </CardContent>
         </Card>
+
 
         {/* Razonamiento del agente */}
         <Card className="lg:col-span-2">
