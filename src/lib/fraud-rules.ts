@@ -93,7 +93,8 @@ export const REGLAS: Regla[] = [
     id: "R06",
     nombre: "Proveedor en lista restrictiva",
     descripcion: "Taller/proveedor flaggeado por compliance",
-    puntos: 25,
+    puntos: 10,
+
     evaluar: (c) => ({ activada: c.proveedor_lista_restrictiva }),
   },
   {
@@ -124,7 +125,8 @@ export const REGLAS: Regla[] = [
     id: "R10",
     nombre: "Ocurrencia en horario atípico",
     descripcion: "Siniestro reportado entre 00:00 y 05:00",
-    puntos: 7,
+    puntos: 3,
+
     evaluar: (c) => ({ activada: c.hora_madrugada }),
   },
   {
