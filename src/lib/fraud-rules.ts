@@ -117,6 +117,9 @@ export const REGLAS: Regla[] = [
     id: "R09",
     nombre: "Beneficiario distinto al titular",
     descripcion: "El pago se solicita a un tercero",
+    puntos: 8,
+    evaluar: (c) => ({ activada: c.beneficiario_distinto_titular }),
+  },
   {
     id: "R10",
     nombre: "Ocurrencia en horario atípico",
@@ -128,7 +131,7 @@ export const REGLAS: Regla[] = [
     id: "R11",
     nombre: "Dinámica sospechosa",
     descripcion: "Tipo de impacto que requiere revisión minuciosa (frontal/posterior/volcadura/múltiple), relato ilógico vs impacto, o accidente múltiple de madrugada",
-    puntos: 15, // máximo teórico: 6 (impacto) + 6 (relato ilógico) + 3 (múltiple madrugada)
+    puntos: 15,
     evaluar: (c) => {
       let p = 0;
       const motivos: string[] = [];
@@ -157,9 +160,6 @@ export const REGLAS: Regla[] = [
   },
 ];
 
-    evaluar: (c) => ({ activada: c.hora_madrugada }),
-  },
-];
 
 export function evaluarCaso(c: CasoInput): ReglaResultado[] {
   return REGLAS.map((r) => {
