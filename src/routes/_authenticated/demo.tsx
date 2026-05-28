@@ -186,8 +186,9 @@ function DemoPage() {
               </select>
             </Campo>
             <Toggle label="Relato ilógico vs tipo de impacto (+6)" checked={!!caso.relato_ilogico} onChange={(v) => setCaso({ ...caso, relato_ilogico: v })} />
-
+          </CardContent>
         </Card>
+
 
         {/* Razonamiento del agente */}
         <Card className="lg:col-span-2">
