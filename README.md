@@ -163,25 +163,95 @@ Pasos sugeridos para producción:
 
 ---
 
+
 ## 10. Estructura del repo
 
+El repositorio está organizado para separar la aplicación Lovable/TanStack Start, la integración con Supabase, la documentación técnica, los recursos de presentación, datos de referencia y pruebas.
+
+```txt
+.
+├── .lovable/
+│   └── project.json                    # configuración interna del proyecto Lovable
+│
+├── data/
+│   ├── README.md                       # descripción del uso de datos
+│   ├── raw/                            # datos crudos o fuentes de entrada
+│   ├── processed/                      # datos procesados o transformados
+│   └── synthetic/                      # datos sintéticos para pruebas/demos
+│
+├── docs/
+│   ├── arquitectura.md                 # diseño técnico y arquitectura general
+│   ├── modelo_datos.md                 # entidades, tablas y relaciones principales
+│   ├── reglas_negocio.md               # reglas funcionales y criterios de negocio
+│   ├── uso_ia.md                       # uso de IA dentro de la solución
+│   └── limitaciones.md                 # restricciones, supuestos y mejoras futuras
+│
+├── notebooks/
+│   ├── README.md                       # descripción de análisis exploratorios
+│   ├── 01_exploracion_datos.md         # exploración inicial de datos
+│   ├── 02_modelo_fraude.md             # diseño conceptual del modelo/reglas de fraude
+│   └── 03_evaluacion_modelo.md         # evaluación y criterios de validación
+│
+├── presentation/
+│   └── README.md                       # enlace y descripción del video de presentación
+│
+├── public/
+│   └── favicon.png                     # recursos públicos de la aplicación
+│
+├── src/
+│   ├── assets/                         # recursos estáticos usados por la app
+│   ├── components/                     # componentes reutilizables de UI
+│   ├── hooks/                          # hooks personalizados de React
+│   ├── integrations/
+│   │   └── supabase/                   # cliente, tipos y utilidades de Supabase
+│   ├── lib/                            # utilidades compartidas, contexto y helpers
+│   ├── routes/                         # rutas de TanStack Start
+│   ├── router.tsx                      # configuración del router
+│   ├── routeTree.gen.ts                # árbol de rutas generado automáticamente
+│   ├── server.ts                       # configuración del servidor
+│   ├── start.ts                        # punto de arranque de la aplicación
+│   └── styles.css                      # estilos globales
+│
+├── supabase/
+│   ├── migrations/                     # migraciones de base de datos
+│   └── config.toml                     # configuración local de Supabase
+│
+├── tests/
+│   ├── README.md                       # descripción de la estrategia de pruebas
+│   ├── components/                     # pruebas de componentes
+│   ├── rules/                          # pruebas de reglas de negocio/fraude
+│   └── services/                       # pruebas de servicios e integraciones
+│
+├── .env.example                        # plantilla de variables de entorno sin credenciales reales
+├── .gitignore                          # exclusiones de Git, incluyendo archivos .env reales
+├── .prettierignore
+├── .prettierrc
+├── README.md                           # documentación principal del proyecto
+├── bun.lock                            # lockfile del gestor Bun
+├── bunfig.toml                         # configuración de Bun
+├── components.json                     # configuración de shadcn/ui
+└── eslint.config.js                    # configuración de linting
 ```
-src/
-├── routes/
-│   ├── __root.tsx
-│   ├── index.tsx · login.tsx
-│   ├── _authenticated.tsx              # layout protegido + ChatFab
-│   └── _authenticated/
-│       ├── dashboard.tsx
-│       ├── casos.index.tsx · casos.$id.tsx
-│       ├── chat.tsx · proveedores.tsx
-│       ├── reportes.tsx · config.tsx · docs.tsx
-│   └── api/chat.ts                     # server route del agente IA
-├── components/
-│   ├── chat-panel.tsx · chat-fab.tsx   # agente IA reutilizable
-│   ├── risk-badge.tsx · app-sidebar.tsx
-│   ├── ai-elements/                    # primitivas del SDK de chat
-│   └── ui/                             # shadcn/ui
-├── integrations/supabase/              # clientes auto-generados
-└── lib/                                # auth-context, utils
-```
+
+
+
+### Relación con la arquitectura del proyecto
+
+La estructura mantiene la base generada por Lovable, React, TanStack Start y Vite, y agrega carpetas de soporte para cumplir con los requisitos del proyecto:
+
+* `src/`: código fuente principal de la aplicación.
+* `supabase/`: configuración, migraciones y recursos asociados al backend en Supabase.
+* `docs/`: documentación técnica y funcional.
+* `data/`: organización de datos de referencia, evitando versionar información sensible.
+* `notebooks/`: análisis exploratorios o documentación analítica en formato Markdown.
+* `tests/`: pruebas automatizadas o casos de validación.
+* `presentation/`: material de exposición, demo o video de presentación.
+
+
+
+
+
+
+
+
+
